@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bgmain2"
+    tools:context=".MainActivity">
+
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#f222"
+        android:background="#fff"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="70dp"
+        android:layout_below="@id/tab_layout"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutSongPlayMain"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:background="#222"
+        >
+
+        <ImageView
+            android:id="@+id/imageViewCoverMainSongPlay"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/ashes_pic_png"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/imageViewCoverMainSongPlay">
+            <TextView
+                android:id="@+id/textviewTitleMainSongPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="All of the stars"
+                android:textSize="17dp"
+                android:textColor="#fff"/>
+            <TextView
+                android:id="@+id/textViewArtistMainSongPlay"
+                android:layout_below="@id/textviewTitleMainSongPlay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Ed Sheeran"
+                android:textSize="14dp"
+                android:textColor="#fff"/>
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/buttonListQueueMain"
+            android:src="@drawable/ic_queue_music"
+            android:background="@null"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageButton
+            android:id="@+id/buttonPlayMain"
+            android:layout_toLeftOf="@id/buttonListQueueMain"
+            android:src="@drawable/ic_play_main"
+            android:background="@null"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

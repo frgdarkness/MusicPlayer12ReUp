@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:weightSum="10">
+        <ImageView
+            android:layout_weight="2"
+            android:id="@+id/imageViewCoverSongRow"
+            android:layout_width="0dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_height="70dp"
+            android:src="@drawable/ashes_pic_png"/>
+
+        <LinearLayout
+            android:layout_weight="8"
+            android:layout_width="0dp"
+            android:layout_height="70dp"
+            android:orientation="vertical"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="13dp">
+
+            <TextView
+                android:textSize="25dp"
+                android:id="@+id/textSongTitleSongRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="A ky full of star"
+                android:textColor="#fff" />
+            <TextView
+                android:textSize="20dp"
+                android:id="@+id/textSongArtistSongRow"
+                android:text="Coldplay"
+                android:textColor="#D3C1C1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+
+</LinearLayout>
