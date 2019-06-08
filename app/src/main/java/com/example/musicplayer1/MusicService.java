@@ -39,6 +39,7 @@ public class MusicService extends Service {
     private static final int NOTIFICATION_ID = 7;
     MediaPlayer media;
     Song songTemp;
+    public static int mediaServiceSessionID=-1;
     private MediaSessionCompat mediaSession;
     private NotificationManagerCompat notificationManager;
 
@@ -121,6 +122,12 @@ public class MusicService extends Service {
         }
     }
 
+    public Bitmap getBitmapByByte(byte[] a){
+
+        Bitmap bm = BitmapFactory.decodeByteArray(a, 0, a.length);
+        return bm;
+    }
+
     public void pause(){
         Log.i("Demo", "pause: ");
         if(media.isPlaying()) {
@@ -142,7 +149,7 @@ public class MusicService extends Service {
 
     public void creatNotiBySongPause() {
 
-        Bitmap artwork = songTemp.getCover();
+        Bitmap artwork = getBitmapByByte(songTemp.getByteImage());
         if(artwork==null)
             artwork = BitmapFactory.decodeResource(getResources(),R.drawable.disc);
 
@@ -193,7 +200,7 @@ public class MusicService extends Service {
 
     public void creatNotiBySongPlay() {
 
-        Bitmap artwork = songTemp.getCover();
+        Bitmap artwork = getBitmapByByte(songTemp.getByteImage());
         if(artwork==null)
             artwork = BitmapFactory.decodeResource(getResources(),R.drawable.disc);
         Intent activityIntent = new Intent(this, ActivityPlay.class);
@@ -277,6 +284,7 @@ public class MusicService extends Service {
             media.reset(); // Reset again to idle state
         }
         media.start();
+        mediaServiceSessionID = media.getAudioSessionId();
         creatNotiBySongPlay();
     }
 
@@ -310,5 +318,9 @@ public class MusicService extends Service {
 
     public void stopFG(){
         stopForeground(true);
+    }
+
+    public int getSessionID(){
+        return media.getAudioSessionId();
     }
 }

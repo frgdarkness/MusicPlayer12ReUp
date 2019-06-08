@@ -13,6 +13,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -27,6 +28,7 @@ public class MyMedia {
     private Context context;
     private static final String musicExtensions = "mp3";
     public static int countFailed = 0;
+    ArrayList<Lyric> listLyric;
 
     public MyMedia(Context context) {
         this.context = context;
@@ -39,6 +41,7 @@ public class MyMedia {
 
     public ArrayList<Song> getAllListSong() {
         ArrayList<Song> mlistSongForArtist = new ArrayList<>();
+        getLyric();
         String[] projection = new String[]{"_id", "artist", "title", "_data", "duration", "album", "album_id"};
         Cursor musicCursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 projection, "is_music != 0", null, "title ASC");
@@ -64,8 +67,16 @@ public class MyMedia {
             songs.setByteImage(getAlbumart(songPath));
             songs.setTimeTotal((int)timeDuration);
             Bitmap bm = getCover(songPath);
+            for(Lyric i:listLyric){
+                Log.i("SetLyric", i.getTitle()+" - "+nameSong);
+                if(nameSong.equals(i.getTitle())) {
+                    songs.setLyric(i.getLyric());
+                    break;
+                }
+                else songs.setLyric(R.string.no_lyric);
+            }
             if(bm!=null) {
-                songs.setCover(getCover(songPath));
+                //songs.setCover(getCover(songPath));
                 mlistSongForArtist.add(songs);
             }else
                 countFailed++;
@@ -96,6 +107,12 @@ public class MyMedia {
         } catch (Exception e) {
 
         }
+        return bm;
+    }
+
+    public Bitmap getBitmapByByte(byte[] a){
+
+        Bitmap bm = BitmapFactory.decodeByteArray(a, 0, a.length);
         return bm;
     }
 
@@ -181,5 +198,14 @@ public class MyMedia {
         );
     }
 
+    public void getLyric(){
+        listLyric = new ArrayList<>();
+        //String s = String.valueOf(R.string.A_Sky_Full_Of_Stars);
+        listLyric.add(new Lyric("A Sky Full Of Stars",R.string.A_Sky_Full_Of_Stars));
+        listLyric.add(new Lyric("May It Be",R.string.May_It_Be));
+        listLyric.add(new Lyric("When I Look At You",R.string.When_I_Look_At_You));
+        listLyric.add(new Lyric("Ashes",R.string.ashes_lyric));
+        listLyric.add(new Lyric("Perfect",R.string.Perfect));
+    }
 
 }

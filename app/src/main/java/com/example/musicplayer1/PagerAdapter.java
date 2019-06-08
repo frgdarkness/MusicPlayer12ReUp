@@ -16,8 +16,8 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int i) {
         switch (i) {
             case 0: return new FragmentListSong();
-            case 1: return new FragmentSearch();
-            //case 2: return new TabFragment3();
+            case 1: return new FragmentPlaylist();
+            case 2: return new FragmentSearch();
             default: return null;
         }
     }

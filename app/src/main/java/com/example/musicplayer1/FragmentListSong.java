@@ -64,7 +64,7 @@ public class FragmentListSong extends Fragment implements SearchView.OnQueryText
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        Toast.makeText(getActivity(),"search Song",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getActivity(),"search Song",Toast.LENGTH_SHORT).show();
         String text = newText;
         adapter.filter(text);
 

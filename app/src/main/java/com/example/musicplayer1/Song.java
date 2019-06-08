@@ -14,7 +14,8 @@ public class Song implements Serializable {
     private String album;
     private Long idAlbum;
     private byte[] bmImage;
-    private Bitmap cover;
+    private int lyric;
+    //private Bitmap cover;
     private int timeTotal;
 
     public String getAlbum() {
@@ -90,13 +91,13 @@ public class Song implements Serializable {
         this.bmImage = bmImage;
     }
 
-    public Bitmap getCover() {
-        return cover;
-    }
+    //public Bitmap getCover() {
+    //    return cover;
+    //}
 
-    public void setCover(Bitmap cover) {
-        this.cover = cover;
-    }
+    //public void setCover(Bitmap cover) {
+    //    this.cover = cover;
+    //}
 
     public int getTimeTotal() {
         return timeTotal;
@@ -104,5 +105,21 @@ public class Song implements Serializable {
 
     public void setTimeTotal(int timeTotal) {
         this.timeTotal = timeTotal;
+    }
+
+    public byte[] getBmImage() {
+        return bmImage;
+    }
+
+    public void setBmImage(byte[] bmImage) {
+        this.bmImage = bmImage;
+    }
+
+    public int getLyric() {
+        return lyric;
+    }
+
+    public void setLyric(int lyric) {
+        this.lyric = lyric;
     }
 }

@@ -1,12 +1,16 @@
 package com.example.musicplayer1;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,10 +48,11 @@ public class SongAdapter extends BaseAdapter {
     private class ViewHolder{
         TextView songTitle2,songArtist2;
         ImageView songCover2;
+        ImageButton btnSetting2;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if(convertView==null){
             viewHolder = new ViewHolder();
@@ -56,15 +61,40 @@ public class SongAdapter extends BaseAdapter {
             viewHolder.songTitle2 = (TextView) convertView.findViewById(R.id.textSongTitleSongRow);
             viewHolder.songArtist2 = (TextView) convertView.findViewById(R.id.textSongArtistSongRow);
             viewHolder.songCover2 = (ImageView)  convertView.findViewById(R.id.imageViewCoverSongRow);
+            viewHolder.btnSetting2 = (ImageButton) convertView.findViewById(R.id.buttonSettingSongRow);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Song s = songList.get(position);
+        final Song s = songList.get(position);
         viewHolder.songArtist2.setText(s.getArctis());
         viewHolder.songTitle2.setText(s.getTitle());
-        viewHolder.songCover2.setImageBitmap(s.getCover());
+        viewHolder.songCover2.setImageBitmap(getBitmapByByte(s.getByteImage()));
+        viewHolder.btnSetting2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context,"Setting: "+s.getTitle(),Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewHolder.songTitle2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.instance.playAllSongAt(position);
+            }
+        });
+        viewHolder.songCover2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.instance.playAllSongAt(position);
+            }
+        });
+        viewHolder.songArtist2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.instance.playAllSongAt(position);
+            }
+        });
         return convertView;
     }
 
@@ -81,5 +111,11 @@ public class SongAdapter extends BaseAdapter {
             }
         }
         notifyDataSetChanged();
+    }
+
+    public Bitmap getBitmapByByte(byte[] a){
+
+        Bitmap bm = BitmapFactory.decodeByteArray(a, 0, a.length);
+        return bm;
     }
 }

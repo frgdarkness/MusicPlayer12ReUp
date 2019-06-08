@@ -41,6 +41,7 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
     private static final int MY_PERMISSIONS_REQUEST_ACCOUNTS = 1;
+    private static final int PERM_REQ_CODE = 23;
     public static MainActivity instance;
     ImageButton btnPlayMain, btnQueueMain;
     TextView txtTitleSongMain, txtArtistSongMain;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     RelativeLayout layoutSongPlayMain;
     ArrayList<Song> listSongFull;
     ArrayList<Song> listSongTemp;
+    ArrayList<Lyric> listLyric;
     static int mPosSong=0;
     static int mPosList=0;
     Song mSongNow;
@@ -56,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     private MusicService musicService;
     private Intent musicIntent;
     private ServiceConnection serviceConnection;
+    ArrayList<ArrayList<Song>> listListSong;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +69,13 @@ public class MainActivity extends AppCompatActivity {
         //txtTest1 = (TextView) findViewById(R.id.textViewTest1);
         //imgTest1 = (ImageView) findViewById(R.id.imageView);
         askForPermission();
+        requestAudioPermission();
+
         myMedia = new MyMedia(MainActivity.this);
-        //readData2();
-        //if(listSongFull==null)
-        //    saveDataDefault2();
-        listSongFull = myMedia.getAllListSong();
+        readData2();
+        if(listSongFull==null)
+            saveDataDefault2();
+        //listSongFull = myMedia.getAllListSong();
 
         musicIntent = new Intent(this,MusicService.class);
         startService(musicIntent);
@@ -94,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         // Set the text for each tab.
         tabLayout.addTab(tabLayout.newTab().setText("Song"));
+        tabLayout.addTab(tabLayout.newTab().setText("Playlist"));
         tabLayout.addTab(tabLayout.newTab().setText("Play Online"));
         //tabLayout.addTab(tabLayout.newTab().setText(R.string.tab_label3));
         // Set the tabs to fill the entire layout.
@@ -130,8 +136,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 //Toast.makeText(MainActivity.this,"Song failed: "+MyMedia.countFailed,Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, QueueActivity.class);
-                startActivity(intent);
+                //Intent intent = new Intent(MainActivity.this, QueueActivity.class);
+                //startActivity(intent);
+                viewPager.setCurrentItem(1);
             }
         });
     }
@@ -146,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setLayoutSongPlayMain(Song s){
-        imgCoverSongMain.setImageBitmap(s.getCover());
+        imgCoverSongMain.setImageBitmap(myMedia.getBitmapByByte(s.getByteImage()));
         txtTitleSongMain.setText(s.getTitle());
         txtArtistSongMain.setText(s.getArctis());
         setImageButtonPlay();
@@ -264,9 +271,10 @@ public class MainActivity extends AppCompatActivity {
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             oos = new ObjectOutputStream(outputStream);
             ArrayList<Song> listSong = myMedia.getAllListSong();
-            listSongFull = listSong;
+
             oos.writeObject(listSong);
             oos.close();
+            listSongFull = listSong;
             Log.i("Demo", "saveDataDefault2: read listsong and save data sucessfull");
             Toast.makeText(this, "Saved successfully", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
@@ -290,4 +298,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    private void requestAudioPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERM_REQ_CODE);
+    }
 }

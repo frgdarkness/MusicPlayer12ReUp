@@ -14,7 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".QueueActivity"></activity>
+        <activity android:name=".ActivitySongOfPL"></activity>
+        <activity android:name=".DemoWave" />
+        <activity android:name=".QueueActivity" />
         <activity android:name=".ActivityPlay" />
         <activity android:name=".MainActivity">
             <intent-filter>
