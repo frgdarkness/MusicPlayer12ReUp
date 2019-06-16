@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ashes_pic_png"
+    android:backgroundTint="@color/colorTintCover1"
+    android:id="@+id/relativeWave"
+    tools:context=".DemoWave">
+
+    <com.gauravk.audiovisualizer.visualizer.BarVisualizer xmlns:custom="http://schemas.android.com/apk/res-auto"
+
+        android:id="@+id/barDemo"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
+        custom:avColor="#D3D300"
+        custom:avDensity="0.2"
+        custom:avSpeed="normal"
+        custom:avType="outline"
+        custom:avWidth="20dp" />
+
+    <com.gauravk.audiovisualizer.visualizer.CircleLineVisualizer xmlns:custom="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/circleDemo"
+        android:layout_below="@+id/barDemo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        custom:avColor="@color/av_deep_orange"
+        custom:avDensity="0.5"
+        custom:avSpeed="medium"
+        custom:avType="fill"/>
+
+</RelativeLayout>

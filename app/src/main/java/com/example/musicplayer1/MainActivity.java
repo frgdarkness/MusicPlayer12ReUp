@@ -50,8 +50,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Song> listSongFull;
     ArrayList<Song> listSongTemp;
     ArrayList<Lyric> listLyric;
+    ArrayList<Playlist> listPlaylist;
     static int mPosSong=0;
-    static int mPosList=0;
+    static int mPosList=-1;
     Song mSongNow;
     MyMedia myMedia;
     Song mSongPlaying;
@@ -73,10 +74,15 @@ public class MainActivity extends AppCompatActivity {
 
         myMedia = new MyMedia(MainActivity.this);
         readData2();
+        readData3();
         if(listSongFull==null)
             saveDataDefault2();
         //listSongFull = myMedia.getAllListSong();
+        if(listPlaylist == null)
+            saveDataDefault3();
 
+        listSongTemp = new ArrayList<>();
+        listSongTemp.addAll(listSongFull);
         musicIntent = new Intent(this,MusicService.class);
         startService(musicIntent);
 
@@ -138,9 +144,12 @@ public class MainActivity extends AppCompatActivity {
                 //Toast.makeText(MainActivity.this,"Song failed: "+MyMedia.countFailed,Toast.LENGTH_SHORT).show();
                 //Intent intent = new Intent(MainActivity.this, QueueActivity.class);
                 //startActivity(intent);
-                viewPager.setCurrentItem(1);
+                //viewPager.setCurrentItem(1);
+                Toast.makeText(MainActivity.this,"Playlist: "+mPosList+"Song total: "+listSongTemp.size(),Toast.LENGTH_SHORT).show();
             }
         });
+
+
     }
 
     public void anhXa(){
@@ -160,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void playAllSongAt(int n){
-        listSongTemp = new ArrayList<>();
-        for(Song i:listSongFull)
-            listSongTemp.add(i);
+        //listSongTemp = new ArrayList<>();
+        //for(Song i:listSongFull)
+        //    listSongTemp.add(i);
         MusicService.posListNow = 0;
         MusicService.posSongNow = n;
         musicService.playSong(listSongTemp.get(n));
@@ -208,6 +217,23 @@ public class MainActivity extends AppCompatActivity {
     public void swapSongInListSongTemp(int a, int b){
         Collections.swap(listSongTemp,a,b);
         mPosSong=b;
+    }
+
+    public void setListSongTempNow(int n){
+        listSongTemp = new ArrayList<>();
+        if(n!=-1)
+            listSongTemp.addAll(listPlaylist.get(n).getListSong());
+        else listSongTemp.addAll(listSongFull);
+    }
+
+    public void setListSongTempDefault(){
+        listSongTemp = new ArrayList<>();
+        listSongTemp.addAll(listSongFull);
+    }
+
+    public void setListSongTempInPL(){
+        listSongTemp = new ArrayList<>();
+        listSongTemp.addAll(listPlaylist.get(mPosList).getListSong());
     }
 
     public void askForPermission() {
@@ -297,8 +323,54 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void saveDataDefault3(){
+        String fileName = "Playlist.com";
+        //String content = "Blog chia se kien thuc lap trinh";
 
+        FileOutputStream outputStream = null;
+        ObjectOutputStream oos;
+        try {
+            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(outputStream);
+            ArrayList<Song> listSong = myMedia.getAllListSong();
+            ArrayList<Song> listS1 = new ArrayList<>();
+            listS1.add(listSong.get(0));
+            listS1.add(listSong.get(1));
+            listS1.add(listSong.get(2));
+            Playlist p1 = new Playlist("Coldplay",listS1);
+            ArrayList<Song> listS2 = new ArrayList<>();
+            listS2.add(listSong.get(5));
+            listS2.add(listSong.get(6));
+            listS2.add(listSong.get(7));
+            Playlist p2 = new Playlist("Ed Sheeran",listS2);
+            ArrayList<Playlist> listPL = new ArrayList<>();
+            listPL.add(p1);
+            listPL.add(p2);
+            oos.writeObject(listPL);
+            oos.close();
+            //listSongFull = listSong;
+            Log.i("Demo", "saveDataDefault3: save data playlist sucessfull");
+            Toast.makeText(this, "Saved playlist successfully", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("Demo", "saveDataDefault2: error "+e.toString());
+        }
+    }
 
+    private void readData3() {
+        try {
+            FileInputStream in = this.openFileInput("Playlist.com");
+            BufferedReader br= new BufferedReader(new InputStreamReader(in));
+            ObjectInputStream ois = new ObjectInputStream(in);
+            //ArrayList<Song> listSong = (ArrayList<Song>) ois.readObject();
+            //listSongFull = listSong;
+            listPlaylist = (ArrayList<Playlist>) ois.readObject();
+            Log.i("Demo", "readData3: read listsong in main sucessfull");
+        } catch (Exception e) {
+            Toast.makeText(this,"Error:"+ e.getMessage(),Toast.LENGTH_SHORT).show();
+            Log.i("Demo", "readData3 main: error "+e.toString());
+        }
+    }
     private void requestAudioPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERM_REQ_CODE);
     }

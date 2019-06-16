@@ -177,9 +177,10 @@ public class ActivityPlay extends AppCompatActivity {
 
                 //Intent intent = new Intent(ActivityPlay.this, DemoWave.class);
                 //startActivity(intent);
+                circleVisual.release();
                 if(sessionID!=-1){
                     if (checkAudioPermission())
-                        circleVisual.setAudioSessionId(sessionID);
+                        circleVisual.setAudioSessionId(MusicService.mediaServiceSessionID);
                     else
                         requestAudioPermission();
 
@@ -559,6 +560,7 @@ public class ActivityPlay extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        circleVisual.release();
         handlerUIP.removeCallbacks(runnableUIP);
     }
 

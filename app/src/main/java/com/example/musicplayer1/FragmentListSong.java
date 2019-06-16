@@ -37,7 +37,7 @@ public class FragmentListSong extends Fragment implements SearchView.OnQueryText
         View view = (View) inflater.inflate(R.layout.fragment_list_song,container,false);
 
         list = view.findViewById(R.id.listViewSong);
-        adapter = new SongAdapter(getActivity(),R.layout.song_row,listSongF);
+        adapter = new SongAdapter(getActivity(),R.layout.song_row,listSongF,0);
         list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {

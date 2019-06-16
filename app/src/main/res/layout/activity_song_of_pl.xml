@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ActivitySongOfPL"
+    android:background="@drawable/bgmain2">
+
+    <TextView
+        android:layout_margin="10dp"
+        android:id="@+id/textViewNameActiPL"
+        android:textColor="#fff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Playlist Name"
+        android:textSize="24dp"/>
+
+    <TextView
+        android:id="@+id/textViewSongCountActiPL"
+        android:text="( 10 )"
+        android:textSize="24dp"
+        android:layout_toRightOf="@id/textViewNameActiPL"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"/>
+
+    <ImageButton
+        android:id="@+id/buttonExitActiPL"
+        android:src="@drawable/ic_exit"
+        android:background="@null"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
+
+    <ListView
+        android:id="@+id/listViewSongActiPL"
+        android:layout_below="@id/textViewNameActiPL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"></ListView>
+
+</RelativeLayout>

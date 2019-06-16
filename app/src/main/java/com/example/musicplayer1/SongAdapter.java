@@ -20,14 +20,15 @@ public class SongAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private List<Song> songList,songListSave;
+    private int from;
 
-
-    public SongAdapter(Context context, int layout, List<Song> songList) {
+    public SongAdapter(Context context, int layout, List<Song> songList, int from) {
         this.context = context;
         this.layout = layout;
         this.songList = songList;
         this.songListSave = new ArrayList<>();
         this.songListSave.addAll(songList);
+        this.from = from;
     }
 
     @Override
@@ -80,22 +81,36 @@ public class SongAdapter extends BaseAdapter {
         viewHolder.songTitle2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.instance.playAllSongAt(position);
+                //MainActivity.instance.playAllSongAt(position);
+                setClick(position);
             }
         });
         viewHolder.songCover2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.instance.playAllSongAt(position);
+                //MainActivity.instance.playAllSongAt(position);
+                setClick(position);
             }
         });
         viewHolder.songArtist2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.instance.playAllSongAt(position);
+                //MainActivity.instance.playAllSongAt(position);
+                setClick(position);
             }
         });
         return convertView;
+    }
+
+    public void setClick(int pos){
+        if(from==0) {
+            MainActivity.mPosList = -1;
+            MainActivity.instance.setListSongTempDefault();
+        }
+        else
+            MainActivity.instance.setListSongTempInPL();
+        //MainActivity.instance.setListSongTempNow(pos);
+        MainActivity.instance.playAllSongAt(pos);
     }
 
     public void filter(String charText) {
