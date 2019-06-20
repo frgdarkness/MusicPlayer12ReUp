@@ -38,7 +38,7 @@
             android:layout_height="56dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="6dp"
-            android:src="@drawable/ashes_pic_png"/>
+            android:src="@drawable/disc"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -50,7 +50,7 @@
                 android:id="@+id/textviewTitleMainSongPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="All of the stars"
+                android:text="Name Song"
                 android:textSize="17dp"
                 android:textColor="#fff"/>
             <TextView
@@ -58,7 +58,7 @@
                 android:layout_below="@id/textviewTitleMainSongPlay"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ed Sheeran"
+                android:text="Artist"
                 android:textSize="14dp"
                 android:textColor="#fff"/>
         </RelativeLayout>

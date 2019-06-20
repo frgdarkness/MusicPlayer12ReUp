@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,10 +19,12 @@ public class QueueActivity extends AppCompatActivity {
     ArrayList<Song> listSongA;
     RecyclerView recyclerViewSongNow;
     public static int position;
+    ImageButton btnExit;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_queue);
+        btnExit = (ImageButton) findViewById(R.id.buttonExitActiQueue);
         listSongA = ActivityPlay.instance.listSongTemp;
         listSong = new ArrayList<>();
         for(Song i:listSongA)
@@ -29,6 +34,13 @@ public class QueueActivity extends AppCompatActivity {
         songAdapterQueue = new SongAdapterQueue(this,listSong);
         recyclerViewSongNow.setAdapter(songAdapterQueue);
         position = MusicService.posSongNow;
+
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
 
 
         ItemTouchHelper helper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT|ItemTouchHelper.UP|ItemTouchHelper.DOWN,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT) {

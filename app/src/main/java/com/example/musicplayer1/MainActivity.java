@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Playlist> listPlaylist;
     static int mPosSong=0;
     static int mPosList=-1;
+    static boolean isPlay = false;
     Song mSongNow;
     MyMedia myMedia;
     Song mSongPlaying;
@@ -138,6 +139,8 @@ public class MainActivity extends AppCompatActivity {
         });
         setLayoutSongPlayClick();
         setButtonPlayClick();
+        setButtonQueueClick();
+        /*
         btnQueueMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -148,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this,"Playlist: "+mPosList+"Song total: "+listSongTemp.size(),Toast.LENGTH_SHORT).show();
             }
         });
+        */
 
 
     }
@@ -166,6 +170,7 @@ public class MainActivity extends AppCompatActivity {
         txtTitleSongMain.setText(s.getTitle());
         txtArtistSongMain.setText(s.getArctis());
         setImageButtonPlay();
+
     }
 
     public void playAllSongAt(int n){
@@ -176,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
         MusicService.posSongNow = n;
         musicService.playSong(listSongTemp.get(n));
         setLayoutSongPlayMain(listSongTemp.get(n));
+        isPlay = true;
         Intent intent = new Intent(MainActivity.this, ActivityPlay.class);
         startActivity(intent);
     }
@@ -191,7 +197,20 @@ public class MainActivity extends AppCompatActivity {
         btnPlayMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ActivityPlay.instance.pauseUIP();
+                if(isPlay)
+                    ActivityPlay.instance.pauseUIP();
+            }
+        });
+    }
+
+    public void setButtonQueueClick(){
+        btnQueueMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isPlay){
+                    Intent intent = new Intent(MainActivity.this, QueueActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }
@@ -200,8 +219,12 @@ public class MainActivity extends AppCompatActivity {
         layoutSongPlayMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ActivityPlay.class);
-                startActivity(intent);
+                if(isPlay) {
+                    Intent intent = new Intent(MainActivity.this, ActivityPlay.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(MainActivity.this,"Choose a song first",Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -371,7 +394,78 @@ public class MainActivity extends AppCompatActivity {
             Log.i("Demo", "readData3 main: error "+e.toString());
         }
     }
+
+    public void savePlaylistChange(){
+        String fileName = "Playlist.com";
+        FileOutputStream outputStream = null;
+        ObjectOutputStream oos;
+        try {
+            outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
+            oos = new ObjectOutputStream(outputStream);
+            oos.writeObject(listPlaylist);
+            oos.close();
+            //listSongFull = listSong;
+            Log.i("Demo", "savePlaylistChange: save data playlist sucessfull");
+            Toast.makeText(this, "Saved playlist change successfully", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.i("Demo", "savePlaylistChange: error "+e.toString());
+        }
+    }
+
+
     private void requestAudioPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERM_REQ_CODE);
+    }
+
+    public void addSongToPL(Song s, int posPL){
+        //Playlist PLteamp = new Playlist(listPlaylist.get(posPL).getName(), listPlaylist.get(posPL).getListSong());
+        ArrayList<Song> arrayListTemp = listPlaylist.get(posPL).getListSong();
+        arrayListTemp.add(s);
+        Playlist temp = new Playlist(listPlaylist.get(posPL).getName(),arrayListTemp);
+        listPlaylist.remove(posPL);
+        listPlaylist.add(posPL,temp);
+        savePlaylistChange();
+    }
+
+    public void delSongOfPL(int posS, int posPL){
+        ArrayList<Song> arrayListTemp = listPlaylist.get(posPL).getListSong();
+        arrayListTemp.remove(posS);
+        Playlist temp = new Playlist(listPlaylist.get(posPL).getName(),arrayListTemp);
+        listPlaylist.remove(posPL);
+        listPlaylist.add(posPL,temp);
+        savePlaylistChange();
+    }
+
+    public void addPlaylist(Playlist pl){
+        listPlaylist.add(pl);
+        savePlaylistChange();
+    }
+
+    public void delPlaylist(int posPL){
+        listPlaylist.remove(posPL);
+        savePlaylistChange();
+    }
+
+    public void exitApp(){
+        //ActivityPlay.instance.exitActi();
+        musicService.closeNoti();
+        musicService.onDestroy();
+        try {
+            ActivitySongOfPL.instance.onBackPressed();
+        }catch (Exception e){
+            Toast.makeText(this,"Error: "+e.toString(),Toast.LENGTH_SHORT).show();
+            Log.i("Demo", "exitApp: ");
+        }
+            //onDestroy();
+        finish();
+        System.exit(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        musicService.closeNoti();
+        musicService.onDestroy();
+        super.onDestroy();
     }
 }

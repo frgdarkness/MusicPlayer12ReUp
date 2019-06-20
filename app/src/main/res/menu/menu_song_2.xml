@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/menuSongAdd2"
+        android:title="Add to playlist"/>
+    <item android:id="@+id/menuSongDel2"
+        android:title="Delete from playlist"/>
+</menu>

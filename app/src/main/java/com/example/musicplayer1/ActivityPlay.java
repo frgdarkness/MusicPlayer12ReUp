@@ -2,6 +2,7 @@ package com.example.musicplayer1;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +16,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.PopupMenu;
 import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -222,6 +229,32 @@ public class ActivityPlay extends AppCompatActivity {
             }
         });
 
+        btnSettingUIP.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu menu = new PopupMenu(ActivityPlay.this,btnSettingUIP);
+                menu.getMenuInflater().inflate(R.menu.menu_song_actiplay,menu.getMenu());
+                menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch(item.getItemId()){
+                            case R.id.menuSleepActiPlay:
+                                Toast.makeText(ActivityPlay.this,"Set Time Sleep",Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.menuThemeActiPlay:
+                                Toast.makeText(ActivityPlay.this,"Change theme",Toast.LENGTH_SHORT).show();
+                                break;
+                            case R.id.menuAddActiPlay:
+                                setDialogSetting();
+                                break;
+                        }
+                        return false;
+                    }
+                });
+
+            }
+        });
 
 
 
@@ -531,6 +564,29 @@ public class ActivityPlay extends AppCompatActivity {
         txtTimeNowUIP.setText(timeSong.format(n*1000));
     }
 
+    public void setDialogSetting(){
+        final Dialog dialog = new Dialog(ActivityPlay.this);
+        dialog.setContentView(R.layout.dialog_setting_song_1);
+        ListView lvDialog = dialog.findViewById(R.id.listViewDiaglogPlaylist);
+        final ArrayList<String> listS = new ArrayList<>();
+        final ArrayList<Playlist> apl = MainActivity.instance.listPlaylist;
+        for(Playlist i:apl)
+            listS.add(i.getName());
+        //ArrayAdapter adapterC = new ArrayAdapter(ActivityPlay.this,android.R.layout.simple_list_item_1,listS);
+        StringAdapter1 adapterC = new StringAdapter1(ActivityPlay.this,R.layout.string_row_1,listS);
+        lvDialog.setAdapter(adapterC);
+        dialog.show();
+        lvDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(ActivityPlay.this, "Added song to "+apl.get(position).getName(),Toast.LENGTH_SHORT).show();
+                MainActivity.instance.addSongToPL(songNow,position);
+                dialog.cancel();
+            }
+        });
+
+    }
+
     public void anhXa(){
         btnNextUIP = (ImageButton) findViewById(R.id.buttonNextUIPlay);
         btnPlayUIP = (ImageButton) findViewById(R.id.buttonPlayUIPlay);
@@ -570,6 +626,12 @@ public class ActivityPlay extends AppCompatActivity {
 
     private void requestAudioPermission() {
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, PERM_REQ_CODE);
+    }
+
+    public void exitActi(){
+        handlerUIP.removeCallbacks(runnableUIP);
+        onDestroy();
+
     }
 
 }

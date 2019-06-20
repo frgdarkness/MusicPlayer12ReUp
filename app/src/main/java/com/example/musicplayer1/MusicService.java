@@ -180,13 +180,16 @@ public class MusicService extends Service {
                 .setContentTitle(songTemp.getTitle())
                 .setContentText(songTemp.getArctis())
                 .setLargeIcon(artwork)
-                .addAction(R.drawable.ic_like, "Dislike", actionIntent)
+                //.addAction(R.drawable.ic_like, "Dislike", actionIntent)
+
                 .addAction(R.drawable.ic_prev, "Previous", pendingIntentPrev)
                 .addAction(R.drawable.ic_play, "Pause", pendingIntentPlay)
+
                 .addAction(R.drawable.ic_next, "Next", pendingIntentNext)
-                .addAction(R.drawable.ic_unlike, "Like", actionIntent)
+                .addAction(R.drawable.ic_exit,"Exit",pendingIntentPlay)
+                //.addAction(R.drawable.ic_unlike, "Like", actionIntent)
                 .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1, 2, 3)
+                        .setShowActionsInCompactView(0, 1, 2)
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setSubText("Sub Text")
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -225,19 +228,24 @@ public class MusicService extends Service {
         intentPrev.setAction("PREV");
         PendingIntent pendingIntentPrev = PendingIntent.getBroadcast(this,0,intentPrev,PendingIntent.FLAG_UPDATE_CURRENT);
 
+        Intent intentExit = new Intent(this,MediaReceiver.class);
+        intentExit.setAction("EXIT");
+        PendingIntent pendingIntentExit = PendingIntent.getBroadcast(this,0,intentExit,PendingIntent.FLAG_UPDATE_CURRENT);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_2_ID)
                 .setSmallIcon(R.drawable.ic_disc)
                 .setContentTitle(songTemp.getTitle())
                 .setContentText(songTemp.getArctis())
                 .setLargeIcon(artwork)
-                .addAction(R.drawable.ic_like, "Dislike", actionIntent)
+                //.addAction(R.drawable.ic_like, "Dislike", actionIntent)
+
                 .addAction(R.drawable.ic_prev, "Previous", pendingIntentPrev)
                 .addAction(R.drawable.ic_pause, "Pause", pendingIntentPlay)
                 .addAction(R.drawable.ic_next, "Next", pendingIntentNext)
-                .addAction(R.drawable.ic_unlike, "Like", actionIntent)
+                .addAction(R.drawable.ic_exit,"Exit",pendingIntentExit)
+                //.addAction(R.drawable.ic_unlike, "Like", actionIntent)
                 .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
-                        .setShowActionsInCompactView(1, 2, 3)
+                        .setShowActionsInCompactView(0, 1, 2)
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setSubText("Sub Text")
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -322,5 +330,9 @@ public class MusicService extends Service {
 
     public int getSessionID(){
         return media.getAudioSessionId();
+    }
+
+    public void closeNoti(){
+        notificationManager.cancel(2);
     }
 }

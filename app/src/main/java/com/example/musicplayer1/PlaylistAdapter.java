@@ -3,10 +3,12 @@ package com.example.musicplayer1;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,18 +45,18 @@ public class PlaylistAdapter extends BaseAdapter {
 
     private class ViewHolder{
         TextView txtPlaylistName;
-        ImageButton btnDelete;
+        ImageButton btnSetting;
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder;
+        final ViewHolder viewHolder;
         if(convertView==null){
             viewHolder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout,null);
             viewHolder.txtPlaylistName = convertView.findViewById(R.id.textViewNamePlaylist);
-            viewHolder.btnDelete = convertView.findViewById(R.id.buttonSettingPlaylist);
+            viewHolder.btnSetting = convertView.findViewById(R.id.buttonSettingPlaylist);
             convertView.setTag(viewHolder);
         }else{
             viewHolder = (ViewHolder) convertView.getTag();
@@ -67,15 +69,31 @@ public class PlaylistAdapter extends BaseAdapter {
                 //Toast.makeText(context,"Playlist: "+p.getName(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(context,ActivitySongOfPL.class);
                 intent.putExtra("PLAYLIST",listPlaylist.get(position));
+                intent.putExtra("POSPL",position);
                 MainActivity.mPosList = position;
                 //MainActivity.instance.setListSongTempNow(position);
                 context.startActivity(intent);
             }
         });
-        viewHolder.btnDelete.setOnClickListener(new View.OnClickListener() {
+        viewHolder.btnSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Setting playlist",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, "Setting playlist",Toast.LENGTH_SHORT).show();
+                PopupMenu menu = new PopupMenu(context, viewHolder.btnSetting);
+                menu.getMenuInflater().inflate(R.menu.menu_playlist_1,menu.getMenu());
+                menu.show();
+                menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if(item.getItemId()==R.id.menuDelPL1){
+                            Toast.makeText(context,"Delete Playlist",Toast.LENGTH_SHORT).show();
+                            MainActivity.instance.delPlaylist(position);
+                            PlaylistAdapter.this.notifyDataSetChanged();
+                            //FragmentPlaylist.instance.updateListViewPL();
+                        }
+                        return false;
+                    }
+                });
             }
         });
         return convertView;

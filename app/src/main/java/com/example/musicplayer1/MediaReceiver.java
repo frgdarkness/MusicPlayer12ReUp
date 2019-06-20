@@ -32,6 +32,9 @@ public class MediaReceiver extends BroadcastReceiver {
             ActivityPlay.instance.nextSong();
             //MainActivity.instance.nextSongMain();
             //ActivityPlaying.instance.changeCover();
+        }else if(action.equals("EXIT")){
+            Toast.makeText(context, action, Toast.LENGTH_SHORT).show();
+            MainActivity.instance.exitApp();
         }
         /*
         if(action.equals("PLAY")) {

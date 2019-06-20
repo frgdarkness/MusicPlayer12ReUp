@@ -22,19 +22,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class SongAdapter extends BaseAdapter {
+public class SongAdapterInPL extends BaseAdapter {
     private Context context;
     private int layout;
     private List<Song> songList,songListSave;
-    private int from;
+    private int posthisPL;
 
-    public SongAdapter(Context context, int layout, List<Song> songList, int from) {
+    public SongAdapterInPL(Context context, int layout, List<Song> songList, int pos) {
         this.context = context;
         this.layout = layout;
         this.songList = songList;
         this.songListSave = new ArrayList<>();
         this.songListSave.addAll(songList);
-        this.from = from;
+        this.posthisPL = pos;
     }
 
     @Override
@@ -60,9 +60,9 @@ public class SongAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
+        final SongAdapterInPL.ViewHolder viewHolder;
         if(convertView==null){
-            viewHolder = new ViewHolder();
+            viewHolder = new SongAdapterInPL.ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(layout,null);
             viewHolder.songTitle2 = (TextView) convertView.findViewById(R.id.textSongTitleSongRow);
@@ -71,7 +71,7 @@ public class SongAdapter extends BaseAdapter {
             viewHolder.btnSetting2 = (ImageButton) convertView.findViewById(R.id.buttonSettingSongRow);
             convertView.setTag(viewHolder);
         }else{
-            viewHolder = (ViewHolder) convertView.getTag();
+            viewHolder = (SongAdapterInPL.ViewHolder) convertView.getTag();
         }
 
         final Song s = songList.get(position);
@@ -83,18 +83,22 @@ public class SongAdapter extends BaseAdapter {
             public void onClick(View v) {
                 //Toast.makeText(context,"Setting: "+s.getTitle(),Toast.LENGTH_SHORT).show();
                 PopupMenu menu = new PopupMenu(context, viewHolder.btnSetting2);
-                menu.getMenuInflater().inflate(R.menu.menu_song_1,menu.getMenu());
+                menu.getMenuInflater().inflate(R.menu.menu_song_2,menu.getMenu());
                 menu.show();
                 menu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
                         switch (item.getItemId()){
-                            case R.id.menuSongAdd:
+                            case R.id.menuSongAdd2:
                                 //Toast.makeText(context,"Add to playlist",Toast.LENGTH_SHORT).show();
                                 setDialogSetting(position);
                                 break;
-                            case R.id.menuSongDel:
-                                Toast.makeText(context,"Delete song from device",Toast.LENGTH_SHORT).show();
+                            case R.id.menuSongDel2:
+                                Toast.makeText(context,"Deleted! "+posthisPL,Toast.LENGTH_SHORT).show();
+                                MainActivity.instance.delSongOfPL(position,posthisPL);
+                                songList.clear();
+                                songList.addAll(MainActivity.instance.listPlaylist.get(posthisPL).getListSong());
+                                SongAdapterInPL.this.notifyDataSetChanged();
                         }
                         return false;
                     }
@@ -126,13 +130,7 @@ public class SongAdapter extends BaseAdapter {
     }
 
     public void setClick(int pos){
-        if(from==0) {
-            MainActivity.mPosList = -1;
-            MainActivity.instance.setListSongTempDefault();
-        }
-        else
-            MainActivity.instance.setListSongTempInPL();
-        //MainActivity.instance.setListSongTempNow(pos);
+        MainActivity.instance.setListSongTempInPL();
         MainActivity.instance.playAllSongAt(pos);
     }
 
@@ -186,4 +184,5 @@ public class SongAdapter extends BaseAdapter {
         });
 
     }
+
 }

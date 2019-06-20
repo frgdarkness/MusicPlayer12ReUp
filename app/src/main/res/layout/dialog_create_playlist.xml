@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:orientation="vertical"
+        android:weightSum="9"
+        android:background="#05243A">
+
+        <TextView
+            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:textSize="26dp"
+            android:layout_gravity="center_vertical"
+            android:text="New Playlist... "
+            android:id="@+id/textDialogPL1"/>
+
+        <EditText
+            android:id="@+id/editTextDialogCreatPL"
+            android:layout_below="@id/textDialogPL1"
+            android:textSize="20dp"
+            android:textColor="#fff"
+            android:outlineAmbientShadowColor="#fff"
+            android:shadowColor="#fff"
+            android:textColorHighlight="#fff"
+            android:outlineSpotShadowColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="3"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="cancel"
+                android:textSize="15dp"
+                android:layout_alignParentRight="true"
+                android:id="@+id/buttonCancelDiaCPL"
+                android:layout_centerVertical="true"/>
+
+            <Button
+                android:id="@+id/buttonCreatDiaCPL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Creat"
+                android:textSize="15dp"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/buttonCancelDiaCPL"
+                />
+        </RelativeLayout>
+        </LinearLayout>
+
+</RelativeLayout>

@@ -5,14 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".QueueActivity"
+    android:background="@drawable/bgmain3"
     >
 
-    <android.support.v7.widget.RecyclerView
+    <ImageButton
+        android:id="@+id/buttonExitActiQueue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_exit"
+        android:background="@null"/>
 
-        android:background="@drawable/bgmain3"
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@id/buttonExitActiQueue"
         android:id="@+id/recycleViewSong"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
     </android.support.v7.widget.RecyclerView>
 
